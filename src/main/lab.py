@@ -61,6 +61,8 @@ def get_complex_output_parser():
     return output_parser
 
 
+# TODO: Finish this function by creating a prompt that specifies
+# the fields to extract from the response:
 def get_complex_prompt():
     prompt_template = """
     For the following movie, extract the following information:
@@ -75,6 +77,8 @@ def get_complex_prompt():
     prompt = ChatPromptTemplate.from_template(prompt_template)
     return prompt
 
+# This function chains the prompt, model, and output_parser together
+# PLEASE DO NOT edit this function but try invoking it with different movies
 def invoke_complex_chain(movie):
     prompt = get_complex_prompt()
     model = AzureChatOpenAI()
@@ -84,6 +88,3 @@ def invoke_complex_chain(movie):
     # Invoke the chain and parse the output using the output parser
     response = chain.invoke({"movie": movie, "format_instructions":  output_parser.get_format_instructions()})
     return response
-
-
-

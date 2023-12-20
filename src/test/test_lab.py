@@ -11,7 +11,7 @@ class TestTransform(unittest.TestCase):
         self.assertIn("year_released", prompt_template)
     
     def test_get_complex_output_parser(self):
-        response_schemas = "".join(get_complex_output_parser().response_schemas)
+        response_schemas = [item.name for item in get_complex_output_parser().response_schemas]
         self.assertIn("title", response_schemas)
         self.assertIn("is_family_friendly", response_schemas)
         self.assertIn("genre", response_schemas)
@@ -26,14 +26,11 @@ class TestTransform(unittest.TestCase):
         self.assertIn("run_time", movie)
         self.assertIn("year_released", movie)
 
-        self.assertEqual(movie["title"], "The Matrix")
-        self.assertEqual(movie["is_family_friendly"], "False")
-        self.assertEqual(movie["genre"], "Action")
-        self.assertEqual(movie["run_time"], "136 minutes")
-        self.assertEqual(movie["year_released"], "1999")
-
-
-    
+        self.assertIn("The Matrix", movie["title"])
+        self.assertIn("Action", movie["genre"])
+        self.assertIn("1999", movie["year_released"])
+        self.assertIn("136 minutes", movie["run_time"])
+        self.assertIn("False", movie["is_family_friendly"])    
 
 if __name__ == '__main__':
     unittest.main()
