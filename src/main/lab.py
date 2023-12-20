@@ -55,8 +55,16 @@ def invoke_basic_chain(topic):
 # - run_time
 # - year_released
 def get_complex_output_parser():
+    title_schema = ResponseSchema(name = "title", description = "The title of the movie")
+    is_family_friendly_schema = ResponseSchema(name = "is_family_friendly", description = "Is the movie family friendly? Return True if yes, False otherwise")
+    genre_schema = ResponseSchema(name = "genre", description = "The genre of the movie")
+    run_time_schema = ResponseSchema(name = "run_time", description = "The run time of the movie in the format \"X minutes\"")
+    year_released_schema = ResponseSchema(name = "year_released", description = "The year the movie was released")
 
-    response_schemas = []
+    response_schemas = [title_schema, is_family_friendly_schema, genre_schema, run_time_schema, year_released_schema]
+    
+    # response_schemas = []
+    
     output_parser = StructuredOutputParser.from_response_schemas(response_schemas)
     return output_parser
 
@@ -65,7 +73,11 @@ def get_complex_prompt():
     prompt_template = """
     For the following movie, extract the following information:
 
-    field1: description1
+    title: The title of the movie
+    is_family_friendly: Is the movie family friendly? Return True if yes, False otherwise
+    genre: The genre of the movie
+    run_time: The run time of the movie in the format "X minutes"
+    year_released: The year the movie was released
     ...
 
     movie: {movie}
@@ -87,3 +99,4 @@ def invoke_complex_chain(movie):
 
 
 
+print([item.name for item in get_complex_output_parser().response_schemas])
