@@ -19,7 +19,10 @@ class TestTransform(unittest.TestCase):
         self.assertIn("year_released", response_schemas)
     
     def test_invoke_complex_chain(self):
-        movie = invoke_complex_chain("The Matrix")
+        try:
+            movie = invoke_complex_chain("The Matrix")
+        except:
+            self.fail("invoke_complex_chain() raised an exception unexpectedly!")
         self.assertIn("title", movie)
         self.assertIn("is_family_friendly", movie)
         self.assertIn("genre", movie)
@@ -30,7 +33,7 @@ class TestTransform(unittest.TestCase):
         self.assertIn("Action", movie["genre"])
         self.assertIn("1999", movie["year_released"])
         self.assertIn("136 minutes", movie["run_time"])
-        self.assertIn("False", movie["is_family_friendly"])    
+        self.assertEqual(False, movie["is_family_friendly"])    
 
 if __name__ == '__main__':
     unittest.main()

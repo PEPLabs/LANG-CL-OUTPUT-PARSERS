@@ -55,15 +55,14 @@ def invoke_basic_chain(topic):
 # - run_time
 # - year_released
 def get_complex_output_parser():
-    title_schema = ResponseSchema(name = "title", description = "The title of the movie")
-    is_family_friendly_schema = ResponseSchema(name = "is_family_friendly", description = "Is the movie family friendly? Return True if yes, False otherwise")
-    genre_schema = ResponseSchema(name = "genre", description = "The genre of the movie")
+    title_schema = ResponseSchema(name = "title", description = "What is the title of the movie?")
+    is_family_friendly_schema = ResponseSchema(name = "is_family_friendly", description = "Is the movie family friendly? Return a boolean: True if yes, False otherwise")
+    genre_schema = ResponseSchema(name = "genre", description = "What are the genre(s) of the movie? Return as a single string, genres separated by spaces")
     run_time_schema = ResponseSchema(name = "run_time", description = "The run time of the movie in the format \"X minutes\"")
     year_released_schema = ResponseSchema(name = "year_released", description = "The year the movie was released")
 
     response_schemas = [title_schema, is_family_friendly_schema, genre_schema, run_time_schema, year_released_schema]
     
-    # response_schemas = []
     
     output_parser = StructuredOutputParser.from_response_schemas(response_schemas)
     return output_parser
@@ -74,15 +73,21 @@ def get_complex_prompt():
     For the following movie, extract the following information:
 
     title: The title of the movie
+
     is_family_friendly: Is the movie family friendly? Return True if yes, False otherwise
+
     genre: The genre of the movie
+
     run_time: The run time of the movie in the format "X minutes"
+
     year_released: The year the movie was released
     ...
 
     movie: {movie}
 
     {format_instructions}
+
+    Ensure the output is valid JSON.
     """
     prompt = ChatPromptTemplate.from_template(prompt_template)
     return prompt
@@ -98,5 +103,7 @@ def invoke_complex_chain(movie):
     return response
 
 
-
-print([item.name for item in get_complex_output_parser().response_schemas])
+try:
+    print(invoke_complex_chain("The Matrix"))
+except Exception as e:
+    print(e)
