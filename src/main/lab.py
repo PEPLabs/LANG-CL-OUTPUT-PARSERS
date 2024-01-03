@@ -1,8 +1,22 @@
-from langchain.chat_models import AzureChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 
 from langchain.output_parsers import ResponseSchema
 from langchain.output_parsers import StructuredOutputParser
+from langchain.llms import HuggingFaceEndpoint
+from langchain_community.chat_models.huggingface import ChatHuggingFace
+
+import os
+
+llm = HuggingFaceEndpoint(
+    endpoint_url=os.environ['LLM_ENDPOINT'],
+    huggingfacehub_api_token=os.environ['HF_TOKEN'],
+    task="text-generation",
+    model_kwargs={
+        "max_new_tokens": 512
+    }
+)
+
+model = ChatHuggingFace(llm=llm)
 
 # This function shows the process of creating an output parser
 # PLEASE DO NOT edit this function
@@ -39,7 +53,6 @@ def get_basic_prompt():
 # and note the output
 def invoke_basic_chain(topic):
     prompt = get_basic_prompt()
-    model = AzureChatOpenAI()
     output_parser = get_basic_output_parser()
     chain = prompt | model | output_parser
 
@@ -55,8 +68,8 @@ def invoke_basic_chain(topic):
 # - run_time
 # - year_released
 def get_complex_output_parser():
-
     response_schemas = []
+    
     output_parser = StructuredOutputParser.from_response_schemas(response_schemas)
     return output_parser
 
@@ -67,12 +80,13 @@ def get_complex_prompt():
     prompt_template = """
     For the following movie, extract the following information:
 
-    field1: description1
     ...
 
     movie: {movie}
 
-    {format_instructions}
+    Format Instructions: {format_instructions}
+
+    Ensure the output is valid JSON. Only talk about the specified movie. Do not include other movies.
     """
     prompt = ChatPromptTemplate.from_template(prompt_template)
     return prompt
@@ -81,7 +95,6 @@ def get_complex_prompt():
 # PLEASE DO NOT edit this function but try invoking it with different movies
 def invoke_complex_chain(movie):
     prompt = get_complex_prompt()
-    model = AzureChatOpenAI()
     output_parser = get_complex_output_parser()
     chain = prompt | model | output_parser
 
