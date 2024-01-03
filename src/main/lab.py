@@ -38,10 +38,11 @@ def get_basic_prompt():
     prompt_template = """
     For the following topic, extract the following information:
 
-    is_food: Is the topic a food? Answer True if yes, False if no.
+    is_food
 
     topic: {topic}
 
+    Answer only in the following format:
     {format_instructions}
     """
     prompt = ChatPromptTemplate.from_template(prompt_template)
