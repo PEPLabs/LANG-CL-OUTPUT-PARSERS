@@ -42,7 +42,7 @@ def get_basic_prompt():
 
     topic: {topic}
 
-    {format_instructions}
+    format instructions: {format_instructions}
     """
     prompt = ChatPromptTemplate.from_template(prompt_template)
     return prompt
@@ -83,16 +83,11 @@ def get_complex_prompt():
     prompt_template = """
     For the following movie, extract the following information:
 
-    title: The title of the movie
-
-    is_family_friendly: Is the movie family friendly? Return True if yes, False otherwise
-
-    genre: The genre of the movie
-
-    run_time: The run time of the movie in the format "X minutes"
-
-    year_released: The year the movie was released
-    ...
+    title
+    is_family_friendly
+    genre
+    run_time
+    year_released
 
     movie: {movie}
 
