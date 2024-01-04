@@ -42,7 +42,8 @@ def get_basic_prompt():
 
     topic: {topic}
 
-    format instructions: {format_instructions}
+    The format should explicitly adhere to the following format instructions: {format_instructions}
+    No extra information should be given. Do not include an explanation. Just give me the JSON.
     """
     prompt = ChatPromptTemplate.from_template(prompt_template)
     return prompt
