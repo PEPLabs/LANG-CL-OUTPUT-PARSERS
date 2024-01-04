@@ -1,5 +1,5 @@
 import unittest
-from src.main.lab import get_complex_output_parser, invoke_complex_chain, get_complex_prompt
+from src.main.lab import get_complex_output_parser, invoke_complex_chain, get_complex_prompt, invoke_basic_chain
 from src.utilities.llm_testing_util import llm_connection_check, llm_wakeup, classify_relevancy
 
 class TestLLMResponses(unittest.TestCase):
@@ -21,6 +21,30 @@ class TestLLMResponses(unittest.TestCase):
             if 'Bad Gateway' in str(e):
                 llm_wakeup()
                 self.fail("LLM is not awake. Please try again in 3-5 minutes.")
+    
+    def test_simple_prompt1(self):
+        try:
+            response = invoke_basic_chain("pizza")
+        except:
+            self.fail("invoke_basic_chain() raised an exception unexpectedly!")
+        self.assertIn("is_food", response)
+        self.assertTrue(response["is_food"])
+    
+    def test_simple_prompt2(self):
+        try:
+            response = invoke_basic_chain("chicken")
+        except:
+            self.fail("invoke_basic_chain() raised an exception unexpectedly!")
+        self.assertIn("is_food", response)
+        self.assertTrue(response["is_food"])
+    
+    def test_simple_prompt3(self):
+        try:
+            response = invoke_basic_chain("car")
+        except:
+            self.fail("invoke_basic_chain() raised an exception unexpectedly!")
+        self.assertIn("is_food", response)
+        self.assertFalse(response["is_food"])
                 
     def test_get_complex_prompt(self):
         prompt_template = get_complex_prompt().messages[-1].prompt.template
